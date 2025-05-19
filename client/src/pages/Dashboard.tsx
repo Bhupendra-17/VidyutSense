@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { ChartBar, FileSpreadsheet, LayoutDashboard, FileText } from 'lucide-react';
+import React, {useState} from 'react';
+import { ChartBar, FileSpreadsheet, LayoutDashboard, MessageSquare } from 'lucide-react';
 import StatCard from '@/components/dashboard/StatCard';
 import LineChart from '@/components/charts/LineChart';
 import BarChart from '@/components/charts/BarChart';
@@ -27,15 +27,14 @@ const Dashboard = () => {
     { key: 'category', title: 'Category' },
     { key: 'stock', title: 'Stock' },
     { key: 'price', title: 'Price' },
-    { 
-      key: 'status', 
+    {
+      key: 'status',
       title: 'Status',
       render: (value: string) => (
-        <span className={`px-2 py-1 rounded-full text-xs ${
-          value === 'In Stock' 
+        <span className={`px-2 py-1 rounded-full text-xs ${value === 'In Stock'
             ? 'bg-green-50 text-green-700'
             : 'bg-amber-50 text-amber-700'
-        }`}>
+          }`}>
           {value}
         </span>
       )
@@ -44,39 +43,41 @@ const Dashboard = () => {
 
   // Sample insights data
   const insightsData = [
-    { 
-      title: 'Average Stock Level', 
-      value: '176 units', 
-      change: 12, 
+    {
+      title: 'Average Stock Level',
+      value: '176 units',
+      change: 12,
       trend: 'up' as const,
       changeLabel: 'Compared to last month'
     },
-    { 
-      title: 'Slow-moving Items', 
-      value: '24 products', 
-      change: -8, 
+    {
+      title: 'Slow-moving Items',
+      value: '24 products',
+      change: -8,
       trend: 'down' as const,
       changeLabel: 'Reduced from last quarter'
     },
-    { 
-      title: 'Reorder Needed', 
-      value: '8 products', 
+    {
+      title: 'Reorder Needed',
+      value: '8 products',
       alert: true,
       changeLabel: 'Critical items'
     },
-    { 
-      title: 'Inventory Value', 
-      value: '$328,450', 
-      change: 5, 
+    {
+      title: 'Inventory Value',
+      value: '$328,450',
+      change: 5,
       trend: 'up' as const,
       changeLabel: 'Increased by $15,220'
     },
   ];
-  
+
   const handleFileUpload = (file: File) => {
     console.log('File uploaded:', file);
     // In a real app, this would process the file or send it to the server
   };
+  const [showChat, setShowChat] = useState(false);
+
 
   return (
     <div className="space-y-8">
@@ -84,48 +85,48 @@ const Dashboard = () => {
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">Get insights from your business data.</p>
       </div>
-      
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard 
+        <StatCard
           title="Total Products"
           value={statsData[0].value}
           trend={statsData[0].trend as 'up' | 'down' | 'neutral'}
           change={statsData[0].change}
           icon={<FileSpreadsheet className="h-4 w-4" />}
-          className="animate-fade-in" 
+          className="animate-fade-in"
           style={{ animationDelay: '0ms' }}
         />
-        <StatCard 
+        <StatCard
           title="Total Revenue"
           value={statsData[1].value}
           trend={statsData[1].trend as 'up' | 'down' | 'neutral'}
           change={statsData[1].change}
           icon={<ChartBar className="h-4 w-4" />}
-          className="animate-fade-in" 
+          className="animate-fade-in"
           style={{ animationDelay: '100ms' }}
         />
-        <StatCard 
+        <StatCard
           title="Active Inventory"
           value={statsData[2].value}
           trend={statsData[2].trend as 'up' | 'down' | 'neutral'}
           change={statsData[2].change}
           icon={<LayoutDashboard className="h-4 w-4" />}
-          className="animate-fade-in" 
+          className="animate-fade-in"
           style={{ animationDelay: '200ms' }}
         />
-        <StatCard 
+        <StatCard
           title="Low Stock Items"
           value={statsData[3].value}
           trend={statsData[3].trend as 'up' | 'down' | 'neutral'}
           change={statsData[3].change}
           icon={<FileSpreadsheet className="h-4 w-4" />}
-          className="animate-fade-in" 
+          className="animate-fade-in"
           style={{ animationDelay: '300ms' }}
         />
       </div>
-      
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="lg:col-span-2 animate-fade-in" style={{ animationDelay: '400ms' }}>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+        <div className=" animate-fade-in" style={{ animationDelay: '400ms' }}>
           <FileUploadCard
             title="Upload Inventory Data"
             description="Upload your CSV or Excel inventory data file"
@@ -140,22 +141,10 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="animate-fade-in" style={{ animationDelay: '600ms' }}>
-          <ShareExportOptions 
-            title="Dashboard Sharing & Export" 
-            dataSource="Dashboard"
-          />
-        </div>
-        <div className="animate-fade-in" style={{ animationDelay: '700ms' }}>
-          <DataInsightsChat />
-        </div>
-      </div>
-      
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <div className="lg:col-span-2 animate-fade-in" style={{ animationDelay: '800ms' }}>
-          <LineChart 
+          <LineChart
             title="Monthly Sales"
             description="Sales trends across months"
             data={monthlySalesData}
@@ -164,7 +153,7 @@ const Dashboard = () => {
           />
         </div>
         <div className="animate-fade-in" style={{ animationDelay: '900ms' }}>
-          <PieChart 
+          <PieChart
             title="Inventory Status"
             description="Current inventory distribution"
             data={inventoryStatusData}
@@ -174,25 +163,56 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      
-      <div className="animate-fade-in" style={{ animationDelay: '1000ms' }}>
-        <DataTable
-          title="Low Stock Products"
-          description="Products that need attention"
-          data={tableData}
-          columns={tableColumns}
-        />
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+        <div className="animate-fade-in" style={{ animationDelay: '1000ms' }}>
+          <DataTable
+            title="Low Stock Products"
+            description="Products that need attention"
+            data={tableData}
+            columns={tableColumns}
+          />
+        </div>
+
+        <div className="animate-fade-in" style={{ animationDelay: '1100ms' }}>
+          <BarChart
+            title="Products by Category"
+            description="Number of products in each category"
+            data={categoryData}
+            dataKey="name"
+            barKey="count"
+          />
+        </div>
       </div>
-      
-      <div className="animate-fade-in" style={{ animationDelay: '1100ms' }}>
-        <BarChart 
-          title="Products by Category"
-          description="Number of products in each category"
-          data={categoryData}
-          dataKey="name"
-          barKey="count"
-        />
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="animate-fade-in" style={{ animationDelay: '600ms' }}>
+          <ShareExportOptions
+            title="Dashboard Sharing & Export"
+            dataSource="Dashboard"
+          />
+        </div>
+        <div className="animate-fade-in" >
+          {/* Floating Chat Toggle Button */}
+          <button
+            onClick={() => setShowChat((prev) => !prev)}
+            className="fixed bottom-6 right-6 z-50 bg-vidyut-500 hover:bg-vidyut-600 text-white p-3 rounded-full shadow-lg transition-all"
+            aria-label="Chat with AI"
+          >
+            <MessageSquare className="h-6 w-6" />
+          </button>
+
+          {/* Floating Chat Window */}
+          {showChat && (
+            <DataInsightsChat
+              floating
+              title="Ask AI"
+              description="Talk with your data assistant"
+            />
+          )}
+        </div>
       </div>
+
     </div>
   );
 };

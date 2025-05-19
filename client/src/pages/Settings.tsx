@@ -41,15 +41,15 @@ const Settings = () => {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Your name" defaultValue="John Doe" />
+                <Input id="name" placeholder="Your name" defaultValue="Rahul Jha" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="Your email" defaultValue="john.doe@example.com" />
+                <Input id="email" type="email" placeholder="Your email" defaultValue="rahul@example.com" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="company">Company</Label>
-                <Input id="company" placeholder="Company name" defaultValue="Acme Inc." />
+                <Input id="company" placeholder="Company name" defaultValue="DataSense AI" />
               </div>
             </CardContent>
             <CardFooter>

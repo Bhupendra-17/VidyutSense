@@ -10,8 +10,8 @@ import {
 
 const sidebarItems = [
   { title: "Dashboard", icon: LayoutDashboard, href: "/" },
-  { title: "Inventory", icon: FileSpreadsheet, href: "/inventory" },
   { title: "Analytics", icon: ChartLine, href: "/analytics" },
+  { title: "Inventory", icon: FileSpreadsheet, href: "/inventory" },
   { title: "Reports", icon: ChartPie, href: "/reports" },
   { title: "Settings", icon: Settings, href: "/settings" },
 ];

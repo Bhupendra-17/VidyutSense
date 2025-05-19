@@ -18,12 +18,14 @@ interface DataInsightsChatProps {
   title?: string;
   description?: string;
   className?: string;
+  floating?: boolean;
 }
 
 const DataInsightsChat = ({
   title = "Data Insights Chat",
   description = "Ask questions about your data",
   className,
+  floating = false, // NEW
 }: DataInsightsChatProps) => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<Message[]>([
@@ -81,7 +83,11 @@ const DataInsightsChat = ({
   };
 
   return (
-    <Card className={className}>
+    <Card className={`${
+        floating
+          ? 'fixed bottom-20  right-6 w-full max-w-md md:max-w-sm lg:max-w-[33%] shadow-2xl z-50'
+          : className
+      }`}>
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -92,93 +98,102 @@ const DataInsightsChat = ({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col h-[400px]">
-          <ScrollArea className="flex-1 pr-4">
-            <div className="space-y-4">
-              {messages.map((msg) => (
+  <div className="flex flex-col max-h-[calc(100vh-5rem)] overflow-hidden">
+    {/* Scrollable Chat Messages */}
+    <ScrollArea className="flex-1 pr-4 overflow-y-auto">
+      <div className="space-y-4">
+        {messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`flex ${
+              msg.sender === 'user' ? 'justify-end' : 'justify-start'
+            }`}
+          >
+            <div
+              className={`flex gap-2 max-w-[75%] ${
+                msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'
+              }`}
+            >
+              <Avatar
+                className={`h-8 w-8 ${
+                  msg.sender === 'user' ? 'bg-vidyut-500' : 'bg-slate-500'
+                }`}
+              >
+                {msg.sender === 'user' ? (
+                  <User className="h-5 w-5" />
+                ) : (
+                  <MessageSquare className="h-5 w-5" />
+                )}
+              </Avatar>
+              <div
+                className={`rounded-lg px-4 py-2 text-sm ${
+                  msg.sender === 'user'
+                    ? 'bg-vidyut-500 text-white'
+                    : 'bg-muted'
+                }`}
+              >
+                {msg.content}
                 <div
-                  key={msg.id}
-                  className={`flex ${
-                    msg.sender === 'user' ? 'justify-end' : 'justify-start'
+                  className={`text-xs mt-1 ${
+                    msg.sender === 'user'
+                      ? 'text-white/70'
+                      : 'text-muted-foreground'
                   }`}
                 >
-                  <div
-                    className={`flex gap-2 max-w-[75%] ${
-                      msg.sender === 'user'
-                        ? 'flex-row-reverse'
-                        : 'flex-row'
-                    }`}
-                  >
-                    <Avatar className={`h-8 w-8 ${
-                      msg.sender === 'user'
-                        ? 'bg-vidyut-500'
-                        : 'bg-slate-500'
-                    }`}>
-                      {msg.sender === 'user' ? (
-                        <User className="h-5 w-5" />
-                      ) : (
-                        <MessageSquare className="h-5 w-5" />
-                      )}
-                    </Avatar>
-                    <div
-                      className={`rounded-lg px-4 py-2 text-sm ${
-                        msg.sender === 'user'
-                          ? 'bg-vidyut-500 text-white'
-                          : 'bg-muted'
-                      }`}
-                    >
-                      {msg.content}
-                      <div className={`text-xs mt-1 ${
-                        msg.sender === 'user'
-                          ? 'text-white/70'
-                          : 'text-muted-foreground'
-                      }`}>
-                        {msg.timestamp.toLocaleTimeString([], { 
-                          hour: '2-digit', 
-                          minute: '2-digit' 
-                        })}
-                      </div>
-                    </div>
-                  </div>
+                  {msg.timestamp.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
                 </div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="flex gap-2 max-w-[75%]">
-                    <Avatar className="h-8 w-8 bg-slate-500">
-                      <MessageSquare className="h-5 w-5" />
-                    </Avatar>
-                    <div className="rounded-lg px-4 py-2 text-sm bg-muted">
-                      <div className="flex items-center gap-1">
-                        <div className="h-2 w-2 rounded-full bg-slate-400 animate-pulse"></div>
-                        <div className="h-2 w-2 rounded-full bg-slate-400 animate-pulse" style={{ animationDelay: '200ms' }}></div>
-                        <div className="h-2 w-2 rounded-full bg-slate-400 animate-pulse" style={{ animationDelay: '400ms' }}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
-          </ScrollArea>
-          
-          <div className="flex gap-2 mt-4">
-            <Input
-              placeholder="Ask about your data..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-              disabled={isLoading}
-              className="flex-1"
-            />
-            <Button 
-              onClick={handleSendMessage}
-              disabled={!message.trim() || isLoading}
-            >
-              <Send className="h-4 w-4" />
-            </Button>
           </div>
-        </div>
-      </CardContent>
+        ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="flex gap-2 max-w-[75%]">
+              <Avatar className="h-8 w-8 bg-slate-500">
+                <MessageSquare className="h-5 w-5" />
+              </Avatar>
+              <div className="rounded-lg px-4 py-2 text-sm bg-muted">
+                <div className="flex items-center gap-1">
+                  <div className="h-2 w-2 rounded-full bg-slate-400 animate-pulse"></div>
+                  <div
+                    className="h-2 w-2 rounded-full bg-slate-400 animate-pulse"
+                    style={{ animationDelay: '200ms' }}
+                  ></div>
+                  <div
+                    className="h-2 w-2 rounded-full bg-slate-400 animate-pulse"
+                    style={{ animationDelay: '400ms' }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </ScrollArea>
+
+    {/* Chat Input */}
+    <div className="flex gap-2 mt-4">
+      <Input
+        placeholder="Ask about your data..."
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
+        disabled={isLoading}
+        className="flex-1"
+      />
+      <Button
+        onClick={handleSendMessage}
+        disabled={!message.trim() || isLoading}
+      >
+        <Send className="h-4 w-4" />
+      </Button>
+    </div>
+  </div>
+</CardContent>
+
     </Card>
   );
 };

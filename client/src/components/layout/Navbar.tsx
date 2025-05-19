@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { ChartPie, Search, Menu } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Logo from '/Logo.png';
@@ -22,12 +22,12 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle sidebar</span>
         </Button>
-
+        <Link to='/'>
         <div className="flex items-center gap-2 font-semibold text-lg">
           <img src={Logo} alt="Logo" className="h-12 rounded-full hover:shadow-md shadow-cyan-500" />
           <span className="hidden sm:inline">VidyutSense</span>
         </div>
-
+        </Link>
         <div className="ml-auto flex items-center space-x-4">
           {/* Search Bar */}
           <div className="relative w-full max-w-[200px] md:max-w-[256px]">
@@ -39,13 +39,8 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
             />
           </div>
 
-          {/* Auth Buttons */}
-          <Link to="/signin">
-            <Button variant="ghost" className="text-sm">
-              Sign In
-            </Button>
-          </Link>
-          <Link to="/signup">
+          {/* Auth Button */}
+          <Link to="/auth">
             <Button className="text-sm">
               Sign Up
             </Button>
