@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Link } from "react-router-dom";
 import { ChartPie, Search, Menu } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Logo from '/Logo.png';
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -22,13 +22,14 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle sidebar</span>
         </Button>
-        
+
         <div className="flex items-center gap-2 font-semibold text-lg">
-          <ChartPie size={24} className="text-vidyut-600" />
+          <img src={Logo} alt="Logo" className="h-12 rounded-full hover:shadow-md shadow-cyan-500" />
           <span className="hidden sm:inline">VidyutSense</span>
         </div>
-        
+
         <div className="ml-auto flex items-center space-x-4">
+          {/* Search Bar */}
           <div className="relative w-full max-w-[200px] md:max-w-[256px]">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -37,6 +38,18 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
               className="w-full bg-background pl-8"
             />
           </div>
+
+          {/* Auth Buttons */}
+          <Link to="/signin">
+            <Button variant="ghost" className="text-sm">
+              Sign In
+            </Button>
+          </Link>
+          <Link to="/signup">
+            <Button className="text-sm">
+              Sign Up
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

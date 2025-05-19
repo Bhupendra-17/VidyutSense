@@ -11,7 +11,7 @@ export const statsData = [
   },
   {
     title: "Total Revenue",
-    value: "$45,231",
+    value: "45,231",
     change: 5.1,
     trend: "up",
   },
@@ -31,12 +31,12 @@ export const statsData = [
 
 // Sample data for line chart
 export const monthlySalesData = [
-  { month: "Jan", sales: 4000 },
+  { month: "Jan", sales: 1000 },
   { month: "Feb", sales: 3000 },
   { month: "Mar", sales: 5000 },
-  { month: "Apr", sales: 4500 },
+  { month: "Apr", sales: 5100 },
   { month: "May", sales: 6000 },
-  { month: "Jun", sales: 5500 },
+  { month: "Jun", sales: 7500 },
   { month: "Jul", sales: 7000 },
   { month: "Aug", sales: 6500 },
   { month: "Sep", sales: 8000 },
@@ -58,7 +58,7 @@ export const categoryData = [
 // Sample data for pie chart
 export const inventoryStatusData = [
   { name: "In Stock", value: 1203 },
-  { name: "Low Stock", value: 32 },
+  { name: "Low Stock", value: 312 },
   { name: "Out of Stock", value: 18 },
 ];
 
