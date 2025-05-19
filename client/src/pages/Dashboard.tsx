@@ -1,5 +1,4 @@
-
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { ChartBar, FileSpreadsheet, LayoutDashboard, MessageSquare } from 'lucide-react';
 import StatCard from '@/components/dashboard/StatCard';
 import LineChart from '@/components/charts/LineChart';
@@ -13,7 +12,19 @@ import DataInsightsChat from '@/components/dashboard/DataInsightsChat';
 import { statsData, monthlySalesData, categoryData, inventoryStatusData } from '@/data/mockData';
 
 const Dashboard = () => {
-  // Sample data for the data table
+  const [showChat, setShowChat] = useState(false);
+  const [timeRange, setTimeRange] = useState('30'); // Default to 30 days
+
+  const handleFileUpload = (file: File) => {
+    console.log('File uploaded:', file);
+  };
+
+  // Filter monthly sales data based on timeRange
+  const filteredMonthlySalesData = monthlySalesData.slice(-parseInt(timeRange));
+
+  // Filter category data similarly (simulate recent categories)
+  const filteredCategoryData = categoryData.slice(0, Math.min(categoryData.length, parseInt(timeRange) / 10));
+
   const tableData = [
     { id: 1, product: 'Laptop', category: 'Electronics', stock: 145, price: '$999.99', status: 'In Stock' },
     { id: 2, product: 'Desk Chair', category: 'Furniture', stock: 32, price: '$249.99', status: 'Low Stock' },
@@ -32,8 +43,8 @@ const Dashboard = () => {
       title: 'Status',
       render: (value: string) => (
         <span className={`px-2 py-1 rounded-full text-xs ${value === 'In Stock'
-            ? 'bg-green-50 text-green-700'
-            : 'bg-amber-50 text-amber-700'
+          ? 'bg-green-50 text-green-700'
+          : 'bg-amber-50 text-amber-700'
           }`}>
           {value}
         </span>
@@ -41,7 +52,6 @@ const Dashboard = () => {
     },
   ];
 
-  // Sample insights data
   const insightsData = [
     {
       title: 'Average Stock Level',
@@ -72,13 +82,6 @@ const Dashboard = () => {
     },
   ];
 
-  const handleFileUpload = (file: File) => {
-    console.log('File uploaded:', file);
-    // In a real app, this would process the file or send it to the server
-  };
-  const [showChat, setShowChat] = useState(false);
-
-
   return (
     <div className="space-y-8">
       <div>
@@ -87,46 +90,26 @@ const Dashboard = () => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          title="Total Products"
-          value={statsData[0].value}
-          trend={statsData[0].trend as 'up' | 'down' | 'neutral'}
-          change={statsData[0].change}
-          icon={<FileSpreadsheet className="h-4 w-4" />}
-          className="animate-fade-in"
-          style={{ animationDelay: '0ms' }}
-        />
-        <StatCard
-          title="Total Revenue"
-          value={statsData[1].value}
-          trend={statsData[1].trend as 'up' | 'down' | 'neutral'}
-          change={statsData[1].change}
-          icon={<ChartBar className="h-4 w-4" />}
-          className="animate-fade-in"
-          style={{ animationDelay: '100ms' }}
-        />
-        <StatCard
-          title="Active Inventory"
-          value={statsData[2].value}
-          trend={statsData[2].trend as 'up' | 'down' | 'neutral'}
-          change={statsData[2].change}
-          icon={<LayoutDashboard className="h-4 w-4" />}
-          className="animate-fade-in"
-          style={{ animationDelay: '200ms' }}
-        />
-        <StatCard
-          title="Low Stock Items"
-          value={statsData[3].value}
-          trend={statsData[3].trend as 'up' | 'down' | 'neutral'}
-          change={statsData[3].change}
-          icon={<FileSpreadsheet className="h-4 w-4" />}
-          className="animate-fade-in"
-          style={{ animationDelay: '300ms' }}
-        />
+        {statsData.map((stat, index) => (
+          <StatCard
+            key={index}
+            title={stat.title}
+            value={stat.value}
+            trend={stat.trend as 'up' | 'down' | 'neutral'}
+            change={stat.change}
+            icon={
+              index % 2 === 0
+                ? <FileSpreadsheet className="h-4 w-4" />
+                : <ChartBar className="h-4 w-4" />
+            }
+            className="animate-fade-in"
+            style={{ animationDelay: `${index * 100}ms` }}
+          />
+        ))}
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-        <div className=" animate-fade-in" style={{ animationDelay: '400ms' }}>
+        <div className="animate-fade-in" style={{ animationDelay: '400ms' }}>
           <FileUploadCard
             title="Upload Inventory Data"
             description="Upload your CSV or Excel inventory data file"
@@ -142,12 +125,27 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Chart Filter Controls */}
+      <div className="flex items-center justify-end space-x-2">
+        <label htmlFor="timeRange" className="text-sm text-muted-foreground">Filter Data:</label>
+        <select
+          id="timeRange"
+          value={timeRange}
+          onChange={(e) => setTimeRange(e.target.value)}
+          className="border px-2 py-1 rounded text-sm"
+        >
+          <option value="7">Last 7 Days</option>
+          <option value="30">Last 30 Days</option>
+          <option value="90">Last 90 Days</option>
+        </select>
+      </div>
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <div className="lg:col-span-2 animate-fade-in" style={{ animationDelay: '800ms' }}>
           <LineChart
             title="Monthly Sales"
             description="Sales trends across months"
-            data={monthlySalesData}
+            data={filteredMonthlySalesData}
             dataKey="month"
             lineKey="sales"
           />
@@ -178,7 +176,7 @@ const Dashboard = () => {
           <BarChart
             title="Products by Category"
             description="Number of products in each category"
-            data={categoryData}
+            data={filteredCategoryData}
             dataKey="name"
             barKey="count"
           />
@@ -192,8 +190,7 @@ const Dashboard = () => {
             dataSource="Dashboard"
           />
         </div>
-        <div className="animate-fade-in" >
-          {/* Floating Chat Toggle Button */}
+        <div className="animate-fade-in">
           <button
             onClick={() => setShowChat((prev) => !prev)}
             className="fixed bottom-6 right-6 z-50 bg-vidyut-500 hover:bg-vidyut-600 text-white p-3 rounded-full shadow-lg transition-all"
@@ -202,7 +199,6 @@ const Dashboard = () => {
             <MessageSquare className="h-6 w-6" />
           </button>
 
-          {/* Floating Chat Window */}
           {showChat && (
             <DataInsightsChat
               floating
@@ -212,7 +208,6 @@ const Dashboard = () => {
           )}
         </div>
       </div>
-
     </div>
   );
 };

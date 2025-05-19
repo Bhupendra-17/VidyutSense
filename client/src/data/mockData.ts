@@ -1,4 +1,3 @@
-
 import { Product } from '../components/inventory/ProductTable';
 
 // Sample data for dashboard stats
@@ -26,7 +25,7 @@ export const statsData = [
     value: "32",
     change: 12.5,
     trend: "up",
-  },
+  }
 ];
 
 // Sample data for line chart
@@ -53,6 +52,8 @@ export const categoryData = [
   { name: "Kitchen", count: 118 },
   { name: "Sports", count: 65 },
   { name: "Books", count: 42 },
+  { name: "Toys", count: 75 },
+  { name: "Office Supplies", count: 130 },
 ];
 
 // Sample data for pie chart
@@ -182,6 +183,46 @@ export const productData: Product[] = [
     category: "Kitchen",
     price: 49.99,
     stock: 23,
+    status: "In Stock",
+  },
+  {
+    id: "16",
+    name: "Kids Toy Set",
+    category: "Toys",
+    price: 59.99,
+    stock: 40,
+    status: "In Stock",
+  },
+  {
+    id: "17",
+    name: "Office Stapler",
+    category: "Office Supplies",
+    price: 14.99,
+    stock: 120,
+    status: "In Stock",
+  },
+  {
+    id: "18",
+    name: "Bluetooth Speaker",
+    category: "Electronics",
+    price: 99.99,
+    stock: 50,
+    status: "In Stock",
+  },
+  {
+    id: "19",
+    name: "Running Shoes",
+    category: "Sports",
+    price: 79.99,
+    stock: 20,
+    status: "In Stock",
+  },
+  {
+    id: "20",
+    name: "Cookbook",
+    category: "Books",
+    price: 24.99,
+    stock: 35,
     status: "In Stock",
   },
 ];

@@ -43,7 +43,13 @@ const Analytics = () => {
     // In a real app, this would process the file or send it to the server
   };
   const [showChat, setShowChat] = useState(false);
-
+  const [timeRange, setTimeRange] = useState('30'); // Default to 30 days
+  // Filter monthly sales data based on timeRange
+    const filteredMonthlySalesData = monthlySalesData.slice(-parseInt(timeRange));
+  
+    // Filter category data similarly (simulate recent categories)
+    const filteredCategoryData = categoryData.slice(0, Math.min(categoryData.length, parseInt(timeRange) / 10));
+  
   return (
     <div className="space-y-8">
       <div>
@@ -69,12 +75,27 @@ const Analytics = () => {
         </div>
       </div>
 
+      {/* Chart Filter Controls */}
+      <div className="flex items-center justify-end space-x-2">
+        <label htmlFor="timeRange" className="text-sm text-muted-foreground">Filter Data:</label>
+        <select
+          id="timeRange"
+          value={timeRange}
+          onChange={(e) => setTimeRange(e.target.value)}
+          className="border px-2 py-1 rounded text-sm"
+        >
+          <option value="7">Last 7 Days</option>
+          <option value="30">Last 30 Days</option>
+          <option value="90">Last 90 Days</option>
+        </select>
+      </div>
+
       <div className="grid gap-6 md:grid-cols-2">
         <div className="animate-fade-in" style={{ animationDelay: '500ms' }}>
           <LineChart
             title="Monthly Sales Trends"
             description="Sales performance over time"
-            data={monthlySalesData}
+            data={filteredMonthlySalesData}
             dataKey="month"
             lineKey="sales"
             lineColor="#3B82F6"
